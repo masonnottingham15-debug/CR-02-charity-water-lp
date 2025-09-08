@@ -1,47 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>charity: water — Clean Water Saves Lives</title>
+  <meta name="description" content="100% of your donation brings clean water to people who need it most. Join charity: water and help end the water crisis." />
+
+  <!-- Fonts: Prefer Avenir / Proxima Nova with accessible fallbacks -->
+  <style>
+    /* ===============
+       BRAND TOKENS
+       =============== */
+    :root {
+      --brand-yellow: #FFC907;
+      --brand-blue:   #003366;
+      --light-blue:   #77A8BB;
+      --green:        #4FCB53;
+      --orange:       #FF902A;
+      --red:          #F5402C;
+      --dark-green:   #159A48;
+      --pink:         #F16061;
+
+      /* Neutrals */
+      --ink-900: #003366;
+      --ink-800: #003366;
+      --ink-700: #003366;
+      --ink-600: #003366;
+      --ink-100: #77A8BB;
+      --white:   #fff7e1;
+
+      /* Layout */
+      --maxw: 1100px;
+      --radius: 18px;
+
+      /* Motion */
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --time: .35s;
+
+      /* Type */
+      --fs-hero: clamp(2rem, 2.5vw + 1.5rem, 4rem);
+      --fs-lg: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+      --fs-md: clamp(1rem, .4vw + .9rem, 1.1rem);
+      --fs-sm: 0.95rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root { --time: 0ms; }
+      * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--ink-900); background: var(--ink-100);
+      font-family: "Avenir Next", Avenir, "Proxima Nova", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+    .container { max-width: var(--maxw); margin-inline: auto; padding: 1rem; }
+
+    .skip-link { position: absolute; left: -999px; top: -999px; background: var(--brand-yellow); color: #111; padding: .75rem 1rem; border-radius: .5rem; font-weight: 700; }
+    .skip-link:focus { left: 1rem; top: 1rem; z-index: 1000; }
+
+    header {
+      backdrop-filter: saturate(140%) blur(6px);
+      position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #e6eef6;
+      background: color-mix(in srgb, var(--light_blue) 85%, var(--brand-blue) 15%);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .5rem; }
+    .brand { display: inline-flex; align-items: center; gap: .75rem; text-decoration: none; }
+    .nav a { text-decoration: none; font-weight: 600; }
+
+    .cta-btn {
+      --bg: var(--brand-yellow);
+      --fg: #1b1400;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .5rem; border: 0; padding: .85rem 1.15rem; border-radius: 999px; cursor: pointer;
+      background: var(--bg); color: var(--fg); font-weight: 800; letter-spacing: .2px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+      transition: transform var(--time) var(--ease), box-shadow var(--time) var(--ease), background var(--time) var(--ease);
+    }
+    .cta-btn:hover, .cta-btn:focus-visible { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,0,0,.12); }
+    .cta-btn:active { transform: translateY(0); }
+
+    .hero-wrap { background: linear-gradient(180deg, color-mix(in srgb, var(--brand-blue) 12%, var(--light_blue) 88%), var(--white)); border-bottom: 1px solid #fff7e1; }
+    .hero-grid { display: grid; gap: 1rem; align-items: stretch; grid-template-columns: 1.1fr 1.2fr 1fr; }
+    .hero-tile { background: var(--light-blue); border-radius: var(--radius); overflow: hidden; position: relative; min-height: 220px; }
+    .hero-tile.logo-tile { display: grid; place-items: center; padding: 2rem; }
+    .hero-tile.stat-tile { display: grid; place-items: center; text-align: center; padding: 1.5rem; }
+
+    .hero-image { position: relative; height: 100%; }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    .stat-eyebrow { font-weight: 900; font-size: var(--fs-lg); color: var(--ink-900); }
+    .stat-sub { font-size: var(--fs-md); color: var(--ink-800); }
+
+    .banner { margin-top: 1rem; border-radius: var(--radius); background: var(--ink-900); color: var(--white); padding: clamp(1.25rem, 1.8vw + 1rem, 2.5rem); text-align: center; }
+    .banner h1 { margin: 0; font-size: var(--fs-hero); letter-spacing: .3px; }
+
+    .subcopy { text-align: center; font-size: var(--fs-lg); color: var(--ink-700); padding-block: 1.25rem 0; }
+
+    .cta-row { display: flex; justify-content: center; gap: .75rem; flex-wrap: wrap; padding-bottom: 2rem; }
+    .cta-btn.blue { --bg: var(--brand-blue); --fg: #04203a; color: #fff7e1; }
+    .cta-btn.blue { color: var(--light-blue); }
+    .cta-btn.blue:hover { background: color-mix(in srgb, var(--brand-blue) 85%, #fff7e1 15%); }
+
+    section { padding-block: clamp(2rem, 4vw, 4rem); }
+    .features { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); }
+    .card { background: #003366; color: var(--light-blue); border-radius: var(--radius); padding: 1.25rem; border: 1px solid #e8eef5; transition: transform var(--time) var(--ease), box-shadow var(--time) var(--ease); }
+    .card:hover, .card:focus-within { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(10,37,64,.08); }
+    .card h3 { margin-top: 0; }
+
+    footer { background: var(--ink-900); color: #dbe7f2; padding-block: 2rem; margin-top: 2rem; }
+    .footer-grid { display: grid; gap: 1rem; grid-template-columns: 1fr auto; align-items: center; }
+
+    @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr 1fr; } .hero-tile.logo-tile { order: -1; } }
+    @media (max-width: 720px) { .features { grid-template-columns: 1fr; } .hero-grid { grid-template-columns: 1fr; } .banner { text-align: left; } }
+  </style>
 </head>
 <body>
-    <!-- Hero Section: This is the main banner at the top of the page -->
-    <section class="hero">
-        <!-- Main headline -->
-        <h1>Clean Water for Everyone</h1>
-        <!-- Subheadline -->
-        <p>Join us in bringing safe, clean water to communities in need.</p>
-    </section>
+  <a href="#main" class="skip-link">Skip to main content</a>
 
-    <!-- Story Section: This tells the story of the nonprofit -->
-    <section class="story">
-        <h2>Our Story</h2>
-        <p>
-         
-    </section>
+  <header role="banner">
+    <div class="container nav" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="charity: water home">
+        <img class="brand-logo" src="./img/cw_logo.png" alt="charity: water logo" style="height:32px;width:auto" />
+      </a>
+      <nav aria-label="Site">
+        <a href="#impact">Impact</a>
+        <span aria-hidden="true"> · </span>
+        <a href="#how">How it works</a>
+        <span aria-hidden="true"> · </span>
+        <a class="cta-btn" href="#donate">Donate</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Real-World Impact Story Section -->
-    <section class="impact-story">
-        <!-- Section headline -->
-        <h2>Real Impact: Meet Amina</h2>
-        <!-- Container for image and text -->
-        <div class="impact-content">
-            <!-- Impact image -->
-            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Amina smiling with clean water" class="impact-image">
-            <!-- Impact story text -->
-            <p>
-                Amina used to walk miles every day to collect water for her family. Thanks to your support, her village now has a clean water well. Amina can go to school and her family is healthier and happier.
-            </p>
+  <main id="main">
+    <div class="hero-wrap">
+      <div class="container">
+        <div class="hero-grid" role="region" aria-label="Hero">
+          <div class="hero-tile logo-tile" aria-hidden="true" style="display:grid;place-items:center;padding:1.25rem">
+            <img src="./img/cw_logo.png" alt="charity: water" style="max-width:80%; height:auto" />
+
+          </div>
+
+          <figure class="hero-tile hero-image">
+            <img src="./img/pipe_hold.jpeg" alt="Worker positions a large water pipe while a community looks on; illustrating water access projects." />
+          </figure>
+
+          <div class="hero-tile stat-tile" aria-live="polite">
+            <div>
+              <div class="stat-eyebrow"><strong>771 million people</strong></div>
+              <div class="stat-sub">still live without clean water</div>
+            </div>
+          </div>
         </div>
+
+        <div class="banner" role="region" aria-label="Headline">
+          <h1>Clean Water Saves Lives</h1>
+        </div>
+
+        <p class="subcopy">100% of your donation brings clean water to people who need it most.</p>
+        <div class="cta-row" id="donate">
+          <a class="cta-btn" href="#impact">See the impact</a>
+          <a class="cta-btn blue" href="#give" aria-describedby="donate-desc">Donate Now</a>
+        </div>
+        <p id="donate-desc" class="container" style="text-align:center;color:var(--ink-600);margin:0;padding-bottom:1rem">Your gift funds sustainable water projects with local partners.</p>
+      </div>
+    </div>
+
+    <section id="impact" class="container">
+      <div class="features" role="list" aria-label="How donations help">
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Local Partners</h3>
+          <p>We fund projects with trusted, in-country partners who understand community needs and long-term maintenance.</p>
+        </article>
+        <article class="card" role="listitem" tabindex="0">
+          <h3>100% Model</h3>
+          <p>Private donors cover operating costs so <strong>every dollar</strong> you give goes to water projects.</p>
+        </article>
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Proven Impact</h3>
+          <p>From wells to piped systems, we design for sustainability and publish results for full transparency.</p>
+        </article>
+      </div>
     </section>
 
-    <!-- Call-to-Action Section: This encourages visitors to take action -->
-    <section class="call-to-action">
-        <h2>Make a Difference</h2>
-        <p>Your support can help save lives. Every donation brings us closer to a world with clean water for all.</p>
-        <a href="#" class="donate-button">Donate Now</a>
+    <section id="how" class="container">
+      <div class="card" style="background:linear-gradient(135deg, var(--brand-blue), var(--light-blue)); color:#fff7e1;">
+        <h3 style="margin-top:0">How it works</h3>
+        <ol>
+          <li>Donate to fund clean water projects with local partners.</li>
+          <li>We build sustainable solutions and monitor performance.</li>
+          <li>Communities gain access to clean, safe water—transforming health, education, and income.</li>
+        </ol>
+        <p style="margin-bottom:0">Want updates on a project you’ve funded? Opt in at checkout and we’ll share progress along the way.</p>
+      </div>
     </section>
+
+    <section id="give" class="container" aria-label="Donation quick actions">
+      <form class="card" onsubmit="event.preventDefault(); announce('Thank you! Your pledge was noted.');">
+        <h3 style="margin-top:0">Make a quick pledge</h3>
+        <div style="display:grid;gap:.75rem;grid-template-columns:repeat(4, minmax(0,1fr));">
+          <label class="sr-only" for="amount">Amount</label>
+          <select id="amount" name="amount" style="grid-column:span 2;padding:.8rem;border-radius:.75rem;border:1px solid #d7e4f0">
+            <option value="30">$30</option>
+            <option value="60">$60</option>
+            <option value="120">$120</option>
+            <option value="240">$240</option>
+          </select>
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" type="email" required placeholder="Email for your receipt" style="grid-column:span 2;padding:.8rem;border-radius:.75rem;border:1px solid #d7e4f0" />
+        </div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="cta-btn blue" type="submit">Pledge</button>
+          <a class="cta-btn" href="#top">Learn more</a>
+        </div>
+        <div id="aria-toast" role="status" aria-live="polite" style="margin-top: .75rem; font-weight:600; color: #0b3a17"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container footer-grid">
+      <p style="margin:0">© <span id="year"></span> charity: water — together, we can end the water crisis.</p>
+      <a class="cta-btn" href="#donate">Donate</a>
+    </div>
+  </footer>
+
+  <style>
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+
+  <script>
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    function announce(msg){
+      const el = document.getElementById('aria-toast');
+      if(!el) return;
+      el.textContent = msg;
+      el.animate?.([
+        { transform: 'translateY(6px)', opacity: .0 },
+        { transform: 'translateY(0)', opacity: 1 }
+      ], { duration: 420, easing: 'var(--ease)' });
+    }
+  </script>
 </body>
 </html>
